@@ -3,7 +3,7 @@ from flask import jsonify
 
 from app.models import User, Room
 
-from api.v1 import api_v1
+from api.v2 import api_v2
 
 from marshmallow import ValidationError
 
@@ -15,10 +15,10 @@ from api.v1.errors import bad_request
 
 import logging
 
-logger = logging.getLogger('api_v1.routes.app')
+logger = logging.getLogger('api_v2.routes.app')
 
 
-@api_v1.route('/users', methods=['GET'])
+@api_v2.route('/users', methods=['GET'])
 def users_list():
     schema = UserSchema()
     Model = User
@@ -28,7 +28,7 @@ def users_list():
     objects = Model.query.paginate(page, items_per_page, False)
     items = [schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.users_list', _external=True)
+    url = url_for('api_v2.users_list', _external=True)
 
     return {
         'posts': items,
@@ -50,7 +50,7 @@ def users_list():
     }
 
 
-@api_v1.route('/users', methods=['POST'])
+@api_v2.route('/users', methods=['POST'])
 def create_user():
     user_schema = UserSchema()
     data = request.get_json() or {}
@@ -77,11 +77,11 @@ def create_user():
         response = jsonify(user_schema.dump(user))
         response.status_code = 201
         response.headers['Location'] = url_for(
-            'api_v1.user_details', id=user.id)
+            'api_v2.user_details', id=user.id)
         return response
 
 
-@api_v1.route('/users/<int:id>', methods=['PUT'])
+@api_v2.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
     user = User.query.filter(User.id == id).first_or_404()
     data = request.get_json() or {}
@@ -108,11 +108,11 @@ def update_user(id):
         response = jsonify(user_schema.dump(user_data))
         response.status_code = 201
         response.headers['Location'] = url_for(
-            'api_v1.user_details', id=user.id)
+            'api_v2.user_details', id=user.id)
         return response
 
 
-@api_v1.route('/users/<int:id>', methods=['GET'])
+@api_v2.route('/users/<int:id>', methods=['GET'])
 def user_details(id):
     user_schema = UserSchema()
     user_groups_schema = UserGroupsSchema()
@@ -125,7 +125,7 @@ def user_details(id):
     objects = user.comments.paginate(page, items_per_page, False)
     items = [user_groups_schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.user_details', _external=True, id=user.id)
+    url = url_for('api_v2.user_details', _external=True, id=user.id)
 
     return {
         'post': user_schema.dump(user),
@@ -148,7 +148,7 @@ def user_details(id):
     }
 
 
-@api_v1.route('/rooms')
+@api_v2.route('/rooms')
 def rooms_list():
     schema = RoomSchema()
     Model = Room
@@ -158,7 +158,7 @@ def rooms_list():
     objects = Model.query.paginate(page, items_per_page, False)
     items = [schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.rooms_list', _external=True)
+    url = url_for('api_v2.rooms_list', _external=True)
 
     return {
         'rooms': items,
@@ -180,7 +180,7 @@ def rooms_list():
     }
 
 
-@api_v1.route('/rooms/<slug>')
+@api_v2.route('/rooms/<slug>')
 def room_details(slug):
     room_schema = RoomSchema()
     post_schema = PostSchema()
@@ -193,7 +193,7 @@ def room_details(slug):
     objects = room.posts.paginate(page, items_per_page, False)
     items = [post_schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.room_details', _external=True, slug=room.slug)
+    url = url_for('api_v2.room_details', _external=True, slug=room.slug)
 
     return {
         'room': room_schema.dump(room),

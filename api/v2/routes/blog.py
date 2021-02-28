@@ -3,11 +3,11 @@ from flask import request, url_for
 from blog.models import Post
 from tags.models import Tag
 
-from api.v1 import api_v1
-from api.v1.serializers import PostSchema, TagSchema, CommentSchema
+from api.v2 import api_v2
+from api.v2.serializers import PostSchema, TagSchema, CommentSchema
 
 
-@api_v1.route('/posts/')
+@api_v2.route('/posts/')
 def posts_list():
     schema = PostSchema()
     Model = Post
@@ -17,7 +17,7 @@ def posts_list():
     objects = Model.query.paginate(page, items_per_page, False)
     items = [schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.posts_list', _external=True)
+    url = url_for('api_v2.posts_list', _external=True)
 
     return {
         'posts': items,
@@ -39,7 +39,7 @@ def posts_list():
     }
 
 
-@api_v1.route('/posts/<slug>')
+@api_v2.route('/posts/<slug>')
 def post_details(slug):
     post_schema = PostSchema()
     comment_schema = CommentSchema()
@@ -51,7 +51,7 @@ def post_details(slug):
     objects = post.comments.paginate(page, items_per_page, False)
     items = [comment_schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.post_details', _external=True, slug=post.slug)
+    url = url_for('api_v2.post_details', _external=True, slug=post.slug)
 
     return {
         'post': post_schema.dump(post),
@@ -74,7 +74,7 @@ def post_details(slug):
     }
 
 
-@api_v1.route('/tags/')
+@api_v2.route('/tags/')
 def tags_list():
     schema = TagSchema()
     Model = Tag
@@ -84,7 +84,7 @@ def tags_list():
     objects = Model.query.paginate(page, items_per_page, False)
     items = [schema.dump(item) for item in objects.items]
 
-    url = url_for('api_v1.tags_list', _external=True)
+    url = url_for('api_v2.tags_list', _external=True)
 
     return {
         'tags': items,
@@ -106,7 +106,7 @@ def tags_list():
     }
 
 
-@api_v1.route('/tags/<slug>')
+@api_v2.route('/tags/<slug>')
 def tag_details(slug):
     post_schema = PostSchema()
     tag_schema = TagSchema()
