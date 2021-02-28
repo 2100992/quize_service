@@ -11,7 +11,7 @@ class UserSchema(Schema):
     email = fields.Email(required=True)
     staff = fields.Bool()
     groups = fields.List(fields.Nested(UserGroupsSchema))
-    url = fields.URL()
+    # url = fields.URL()
     id = fields.Int()
 
 
@@ -25,4 +25,4 @@ class UserUpdateSchema(Schema):
 
 class RoomSchema(Schema):
     name = fields.Str(required=True)
-    url = fields.URL()
+    # url = fields.URL()

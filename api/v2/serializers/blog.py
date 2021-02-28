@@ -5,7 +5,7 @@ from api.v1.serializers import UserSchema
 class TagSchema(Schema):
     name = fields.Str(required=True)
     slug = fields.Str()
-    url = fields.URL()
+    # url = fields.URL()
 
 
 class PostSchema(Schema):
@@ -14,7 +14,7 @@ class PostSchema(Schema):
     title = fields.Str(required=True)
     body = fields.Str(required=True)
     author = fields.Nested(UserSchema)
-    url = fields.URL()
+    # url = fields.URL()
     tags = fields.List(fields.Nested(TagSchema))
 
 

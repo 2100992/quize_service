@@ -44,6 +44,6 @@ class Room(BaseModel):
     def __repr__(self):
         return f'<Room {self.name}>'
 
-    @property
-    def url(self):
-        return url_for('api_v1.room_details', slug=self.slug, _external=True)
+    # @property
+    # def url(self):
+    #     return url_for('api_v1.room_details', slug=self.slug, _external=True)

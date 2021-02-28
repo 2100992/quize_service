@@ -20,9 +20,9 @@ class Tag(BaseModel):
     def generate_slug(self):
         self.slug = slugify(self.name)
 
-    @property
-    def url(self):
-        return url_for('api_v1.tag_details', slug=self.slug, _external=True)
+    # @property
+    # def url(self):
+    #     return url_for('api_v1.tag_details', slug=self.slug, _external=True)
 
     def __repr__(self):
         return f'<Tag {self.name}>'

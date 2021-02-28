@@ -48,9 +48,9 @@ class Post(BaseModel):
                            backref=db.backref('posts', lazy='dynamic')
                            )
 
-    @property
-    def url(self):
-        return url_for('api_v1.post_details', slug=self.slug, _external=True)
+    # @property
+    # def url(self):
+    #     return url_for('api_v1.post_details', slug=self.slug, _external=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
