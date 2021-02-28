@@ -1,0 +1,9 @@
+venv
+.vscode
+*.db
+*.pyc
+experiments
+*/static/media
+static/media/
+*.log
+*secrets*
