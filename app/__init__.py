@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
+from flask_cors import CORS
 from config import Configuration, LOGGING
 
 import logging
@@ -10,6 +11,7 @@ import logging.config
 logging.config.dictConfig(LOGGING)
 
 app = Flask(__name__)
+cors = CORS(app, resouces={r"/api/*": {'origins': "*"}})
 
 app.config.from_object(Configuration)
 app.static_folder = app.config.get('STATIC_FOLDER', 'static')
