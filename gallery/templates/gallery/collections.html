@@ -1,0 +1,8 @@
+{% extends "./gallery/base.html" %}
+{% block content %}
+    {% if context %}
+        {% for obj in context %}
+            <div> {{obj.name}} {{obj.url}} </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "./gallery/base.html" %}
+{% block content %}
+    {% if context %}
+        <div> {{context.collection.name}} {{context.collection.url}} </div>
+    {% endif %}
+{% endblock %}
