@@ -9,10 +9,16 @@ class Configuration:
         'SECRET_KEY',
         'you-will-never-guess'
     )
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL',
-        'sqlite:///' + os.path.join(basedir, 'app.db')
-    )
+    if os.path.isfile('secrets.py'):
+        import secrets
+
+    if secrets.SQLALCHEMY_DATABASE_URI:
+        SQLALCHEMY_DATABASE_URI = secrets.SQLALCHEMY_DATABASE_URI
+    else:
+        SQLALCHEMY_DATABASE_URI = os.environ.get(
+            'DATABASE_URL',
+            'sqlite:///' + os.path.join(basedir, 'app.db')
+        )
     SERVER_NAME = 'localhost:5000'
     STATIC_FOLDER = os.path.join(basedir, 'static')
 
