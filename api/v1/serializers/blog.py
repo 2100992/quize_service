@@ -1,11 +1,6 @@
 from marshmallow import Schema, fields
-from api.v1.serializers import UserSchema
-
-
-class TagSchema(Schema):
-    name = fields.Str(required=True)
-    slug = fields.Str()
-    # url = fields.URL()
+from . import UserSchema
+from .tags import TagSchema
 
 
 class PostSchema(Schema):
