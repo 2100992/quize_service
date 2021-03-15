@@ -1,5 +1,7 @@
 import os
 
+import cv2
+
 from flask import url_for
 
 from app import app, db
@@ -137,6 +139,7 @@ class Picture(BaseModel):
     path = db.Column(db.String(1024), index=True, unique=True)
     name = db.Column(db.String(140), index=True)
     collection_id = db.Column(db.Integer, db.ForeignKey('collections.id'))
+    image_hash = db.Column(db.String(1024), index=True)
 
     collections = db.relationship('Collection',
                                   secondary=pictures_collections,
@@ -157,6 +160,11 @@ class Picture(BaseModel):
             self.name = os.path.split(self.path)[-1]
         super().__init__(*args, **kwargs)
 
+    def save(self, *args, **kwargs):
+        if not self.image_hash:
+            self.image_hash = self._hash
+        super().save(*args, **kwargs)
+
     @property
     def url(self):
         return url_for('static', filename=self.path, _external=True)
@@ -164,3 +172,81 @@ class Picture(BaseModel):
     @property
     def _path(self):
         return os.path.join(app.static_folder, self.path)
+
+    @property
+    def _hash(self, hash_size=[8, 8]) -> str:
+
+        image = cv2.imread(self._path)
+        resized = cv2.resize(image, tuple(hash_size),
+                             interpolation=cv2.INTER_AREA)
+        gray_image = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        avg = gray_image.mean()
+        ret, threshold_image = cv2.threshold(gray_image, avg, 255, 0)
+
+        image_hash = ''
+
+        for x in range(hash_size[0]):
+            for y in range(hash_size[1]):
+                val = threshold_image[x, y]
+                if val == 255:
+                    image_hash += '1'
+                else:
+                    image_hash += '0'
+        return image_hash
+
+    # @property
+    def compare(self, another) -> int:
+        h_dist = self.similar_pictures.filter_by(picture=another).first()
+        h_reverse_dist = self.similar_pictures_reverse.filter_by(picture=another).first()
+        if h_dist:
+            return h_dist.distance
+        elif h_reverse_dist:
+            return h_reverse_dist.distance
+        else:
+            h_dist = HammingDistace(self, another)
+            h_dist.save()
+            return h_dist.distance
+
+
+class HammingDistace(BaseModel):
+    __tablename__ = 'hamming_distance'
+
+    picture_id = db.Column(db.Integer, db.ForeignKey('pictures.id'))
+    picture = db.relationship(
+        'Picture',
+        foreign_keys=[picture_id],
+        backref=db.backref('similar_pictures', lazy='dynamic')
+        )
+
+    another_id = db.Column(db.Integer, db.ForeignKey('pictures.id'))
+    another = db.relationship(
+        'Picture',
+        foreign_keys=[another_id],
+        backref=db.backref('similar_pictures_reverse', lazy='dynamic')
+    )
+
+    distance = db.Column(db.Integer)
+
+    def __init__(self, picture, another, *args, **kwargs):
+        self.picture = picture
+        self.another = another
+        super().__init__(*args, **kwargs)
+
+
+    def save(self, *args, **kwargs):
+        try:
+            self.distance = self._distance
+        except Exception:
+            self.distance = None
+        super().save(*args, **kwargs)
+
+    @property
+    def _distance(self):
+        l = len(self.picture.image_hash)
+        i = 0
+        count = 0
+        while i < l:
+            if self.picture.image_hash[i] != self.another.image_hash[i]:
+                count += 1
+            i += 1
+        return count
