@@ -41,7 +41,7 @@ def users_list():
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
@@ -139,7 +139,7 @@ def user_details(id):
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
@@ -171,7 +171,7 @@ def rooms_list():
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
@@ -207,7 +207,7 @@ def room_details(slug):
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",

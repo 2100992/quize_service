@@ -30,7 +30,7 @@ def posts_list():
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
@@ -65,7 +65,7 @@ def post_details(slug):
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
@@ -97,7 +97,7 @@ def tags_list():
             'prev_num': objects.prev_num
         },
         '_links': {
-            'currnt_page': f"{url}?page={objects.page}",
+            'current_page': f"{url}?page={objects.page}",
             'first_page': f"{url}?page=1",
             'last_page': f"{url}?page={objects.pages}",
             'next_page': f"{url}?page={objects.next_num}",
