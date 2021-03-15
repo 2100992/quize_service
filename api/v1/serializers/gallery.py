@@ -20,3 +20,7 @@ class PictureSchema(Schema):
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
     url = fields.URL()
+
+class SimilarPictureSchema(Schema):
+    picture = fields.Nested(PictureSchema)
+    distance = fields.Integer()
