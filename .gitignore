@@ -7,3 +7,4 @@ experiments
 static/media/
 *.log
 *secrets*
+VOLUMES
